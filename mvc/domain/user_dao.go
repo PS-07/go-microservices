@@ -11,7 +11,7 @@ type userDaoInterface interface {
 	GetUser(int64) (*User, *utils.ApplicationError)
 }
 
-type userDao struct {}
+type userDao struct{}
 
 var (
 	users = map[int64]*User{

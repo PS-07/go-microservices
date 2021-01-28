@@ -9,10 +9,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type userDaoMock struct {}
+type userDaoMock struct{}
 
 var (
-	UserDaoMock userDaoMock
+	UserDaoMock     userDaoMock
 	getUserFunction func(userID int64) (*domain.User, *utils.ApplicationError)
 )
 
@@ -27,9 +27,9 @@ func init() {
 func TestGetUserNotFoundInDatabase(t *testing.T) {
 	getUserFunction = func(userID int64) (*domain.User, *utils.ApplicationError) {
 		return nil, &utils.ApplicationError{
-			Message: "user 0 does not exists",
+			Message:    "user 0 does not exists",
 			StatusCode: http.StatusNotFound,
-			Code: "not_found",
+			Code:       "not_found",
 		}
 	}
 
@@ -44,10 +44,10 @@ func TestGetUserNotFoundInDatabase(t *testing.T) {
 func TestGetUserNoError(t *testing.T) {
 	getUserFunction = func(userID int64) (*domain.User, *utils.ApplicationError) {
 		return &domain.User{
-			ID: 3,
+			ID:        3,
 			FirstName: "Ding",
-			LastName: "Liren",
-			Email: "dl@chess.com",
+			LastName:  "Liren",
+			Email:     "dl@chess.com",
 		}, nil
 	}
 
