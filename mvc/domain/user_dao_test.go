@@ -8,7 +8,7 @@ import (
 )
 
 func TestGetUserNoUserFound(t *testing.T) {
-	user, err := GetUser(0)
+	user, err := UserDao.GetUser(0)
 
 	assert.Nil(t, user, "we were not expecting a user with id 0")
 	assert.NotNil(t, err)
@@ -19,7 +19,7 @@ func TestGetUserNoUserFound(t *testing.T) {
 }
 
 func TestGetUserNoError(t *testing.T) {
-	user, err := GetUser(1)
+	user, err := UserDao.GetUser(1)
 
 	assert.Nil(t, err)
 	assert.NotNil(t, user)
