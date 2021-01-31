@@ -79,9 +79,9 @@ func TestCreateRepoConcurrentInvalidRequest(t *testing.T) {
 	service := repoService{}
 	request := repositories.CreateRepoRequest{}
 	input := make(chan repositories.CreateRepoResult)
-	
+
 	go service.createRepoConcurrent(request, input)
-	result := <- input
+	result := <-input
 
 	assert.NotNil(t, result)
 	assert.Nil(t, result.Response)
@@ -106,9 +106,9 @@ func TestCreateRepoConcurrentErrorFromGithub(t *testing.T) {
 	service := repoService{}
 	request := repositories.CreateRepoRequest{Name: "test-repo"}
 	input := make(chan repositories.CreateRepoResult)
-	
+
 	go service.createRepoConcurrent(request, input)
-	result := <- input
+	result := <-input
 
 	assert.NotNil(t, result)
 	assert.Nil(t, result.Response)
@@ -134,9 +134,9 @@ func TestCreateRepoConcurrentNoError(t *testing.T) {
 	service := repoService{}
 	request := repositories.CreateRepoRequest{Name: "test-repo"}
 	input := make(chan repositories.CreateRepoResult)
-	
+
 	go service.createRepoConcurrent(request, input)
-	result := <- input
+	result := <-input
 
 	assert.NotNil(t, result)
 	assert.Nil(t, result.Error)
@@ -154,22 +154,22 @@ func TestHandleRepoResults(t *testing.T) {
 
 	service := repoService{}
 	go service.handleRepoResults(&wg, input, output)
-	
+
 	wg.Add(1)
 	go func() {
 		input <- repositories.CreateRepoResult{
 			Error: errors.NewBadRequestError("invalid repository name"),
 		}
-	} ()
+	}()
 
 	wg.Wait()
 	close(input)
-	result := <- output
+	result := <-output
 
 	assert.NotNil(t, result)
 	assert.EqualValues(t, 0, result.StatusCode)
 	assert.EqualValues(t, 1, len(result.Results))
-	assert.NotNil(t, result.Results[0].Error)	
+	assert.NotNil(t, result.Results[0].Error)
 	assert.EqualValues(t, http.StatusBadRequest, result.Results[0].Error.StatusFn())
 	assert.EqualValues(t, "invalid repository name", result.Results[0].Error.MessageFn())
 }

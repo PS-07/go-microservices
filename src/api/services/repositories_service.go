@@ -64,7 +64,7 @@ func (s *repoService) CreateRepos(requests []repositories.CreateRepoRequest) (re
 
 	wg.Wait()
 	close(input)
-	result := <- output
+	result := <-output
 
 	successCreations := 0
 	for _, current := range result.Results {
@@ -89,7 +89,7 @@ func (s *repoService) handleRepoResults(wg *sync.WaitGroup, input chan repositor
 	for incomingEvent := range input {
 		repoResult := repositories.CreateRepoResult{
 			Response: incomingEvent.Response,
-			Error: incomingEvent.Error,
+			Error:    incomingEvent.Error,
 		}
 		results.Results = append(results.Results, repoResult)
 		wg.Done()
